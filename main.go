@@ -22,7 +22,7 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 		return events.APIGatewayProxyResponse{Body: "Bad Request", StatusCode: 400}, nil
 	}
 
-	greeting := "Hello, " + requestJSON.Name
+	greeting := "Hello~~~~~, " + requestJSON.Name + "!!!!!"
 	responseJSON, _ := json.Marshal(ResponseJSON{Message: greeting})
 	return events.APIGatewayProxyResponse{Body: string(responseJSON), StatusCode: 200}, nil
 }

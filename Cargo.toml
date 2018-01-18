@@ -1,0 +1,6 @@
+[package]
+name = "aws-lambda-golang-todo-app"
+version = "0.1.0"
+authors = ["shinchi kogai <kogai0121@gmail.com>"]
+
+[dependencies]
