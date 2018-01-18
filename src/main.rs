@@ -1,3 +1,4 @@
+use std::io::Write;
 use std::net::TcpListener;
 use std::thread::spawn;
 use std::env;
@@ -17,15 +18,54 @@ impl Server {
 
         for stream in self.listener.incoming() {
             match stream {
-                Ok(stream) => {
+                Ok(mut stream) => {
                     spawn(move || {
                         println!("[SERVER]: Recieve connection from client. {:?}", stream);
+                        let response = create_response();
+                        println!("[SERVER]: Send {:?}", response);
+                        stream.write_all(response.as_slice()).unwrap();
+
                     });
                 }
                 Err(e) => println!("[SERVER]: Error, {:?}", e),
             }
         }
     }
+}
+
+fn create_response() -> Vec<u8> {
+    let mut body = Vec::new();
+    // let file = File::open(format!("{}{}", ROOT_DIR, &request_header.uri));
+    // let (mut body, status) = match file {
+    //     Ok(mut f) => {
+    //         let mut buffer = Vec::new();
+    //         f.read_to_end(&mut buffer).unwrap();
+    //         (buffer, HttpStatus::from_usize(200))
+    //     }
+    //     Err(e) => {
+    //         println!("{}", e);
+    //         let mut f = File::open(format!("{}{}", ROOT_DIR, "/404.html")).unwrap();
+    //         let mut buffer = Vec::new();
+    //         f.read_to_end(&mut buffer).unwrap();
+    //         (buffer, HttpStatus::from_usize(404))
+    //     }
+    // };
+
+    let mut send_buffer = [
+        format!("HTTP/1.1 200"),
+        // format!("Date:  "),
+        format!("Server: Modoki/0.1"),
+        format!("Connection: close"),
+        // format!("{}", request_header.content_type.to_string()),
+        format!("application/json"),
+        format!(""),
+        format!(""),
+    ].join("\r\n")
+        .as_bytes()
+        .to_vec();
+
+    send_buffer.append(&mut body);
+    send_buffer
 }
 
 

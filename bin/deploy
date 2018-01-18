@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 
-GOARCH=amd64 GOOS=linux go build -o main
+# GOARCH=amd64 GOOS=linux go build -o main
 
 aws cloudformation package \
     --template-file template.yml \
